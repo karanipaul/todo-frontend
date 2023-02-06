@@ -81,6 +81,7 @@ export const App = () => {
 						<input
 							className='h-10 text-lg w-full px-3 border-2 border-gray-400 rounded-md focus:outline-none text-gray-700'
 							type='text'
+							placeholder='Enter todo title...'
 							value={title}
 							onChange={(e) => setTitle(e.target.value)}
 						/>
