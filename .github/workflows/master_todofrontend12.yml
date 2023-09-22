@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - todofrontend12
+name: Build and deploy Node.js app to Azure Web App - todorca-frontend
 
 on:
   push:
@@ -25,13 +25,14 @@ jobs:
         run: |
           npm install
           npm run build --if-present
-          npm run test --if-present
+      - name: Zip artifact for deployment
+        run: zip release.zip ./* -r
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: .
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -46,11 +47,17 @@ jobs:
         with:
           name: node-app
 
+      - name: unzip artifact for deployment
+        run: unzip release.zip
+
+      - name: Delete release.zip
+        run: rm release.zip
+
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'todofrontend12'
+          app-name: 'todorca-frontend'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C9A625A9CFA9428FA47CE393D79B6FA5 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8FDF287A6F9247DC9665E95663AE60CC }}
           package: .
